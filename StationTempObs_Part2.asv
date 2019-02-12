@@ -55,8 +55,8 @@ figure(1); clf
 worldmap('World')
 load coastlines
 plotm(coastlat,coastlon)
-scatterm(lat,lon,15,(P_recent(:,1)-globalrate), 'filled'); hold on;
-colormap(cmocean('balance')); caxis([-.07 .07]); colorbar
+scatterm(lat,lon,15,(P_recent(:,1)-globalrate), 'filled');colorbar;
+colormap("balance")
 title('Rate of temperature change since 1960 by station')
 
 

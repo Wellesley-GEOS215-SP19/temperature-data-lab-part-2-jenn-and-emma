@@ -35,7 +35,7 @@
 filename = ['model' num2str(station_number) '.csv'];
 %Extract the year and annual mean temperature data
 stationdata= readtable(filename)
-tempData = table2array(stationdata);
+tempData = table2array(stationdata(:,4:15));
 yrMean = mean(tempData');
 yrMean = yrMean';
     
@@ -47,12 +47,16 @@ yrMean = yrMean';
 %  with both values called baseline_model
 % <-- (this will take multiple lines of code - see the procedure you
  yrInd = find(stationdata.Year > 2006 & stationdata.Year < 2025);
- baseline_model= mean(tempData(yrInd,:))
+  %Now calculate the mean over the full time period from 1981-2000
+IndMean = mean(yrMean(yrInd))
+ 
+ baseline_model=  mean(
+ %followed last week for a reminder of how you can do this)
 
-  %followed last week for a reminder of how you can do this)
+
 %% Calculate the 5-year moving mean smoothed annual mean temperature anomaly over the modeled period
- <-- anomaly
- <-- smoothed anomaly
+ %<-- anomaly
+ %<-- smoothed anomaly
 
 %% Calculate the linear trend in temperature this station over the modeled 21st century period
  %<--
