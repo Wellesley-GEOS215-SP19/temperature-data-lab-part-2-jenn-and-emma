@@ -80,9 +80,7 @@ tempAnnMeanAnomaly= NaN*zeros(94, 18)
 % (2006-2025) temperatures, 2) the annual mean temperature anomaly, and 3)
 % the slope and y-intercept of the linear trend over the 21st century
 for i = 1:18
-    [P(i, :),tempAnnMeanAnomaly(:,i)]= StationModelProjections(sta(i))
-  
-    baseline_model(i,:) = StationModelProjections(sta(i))
+    [baseline_model(i,:),tempAnnMeanAnomaly(:,i), P(i,:)] = StationModelProjections(sta(i));
 end
 
 
@@ -114,7 +112,18 @@ title('Standard Deviation of projected Rate of temperature change 2006-2025')
 %projections, calculated as the time (beginning from 2006) when the linear
 %temperature trend will have reached 2x the standard deviation of the
 %temperatures from the baseline period
- emerg= min(find(tempData(:,1)> (2*baseline_model(1,2)-P(1,2))/P(1,1))
-plot(tempData(:,1), P*tempData(:,1)+ P(1,1)
+for i = 1:18
+    filename = ['model' num2str(sta(i)) '.csv'];
+    stationdata = readtable(filename);
+    tempData = table2array(stationdata);
+    threshhold = 2*baseline_model(i,2)+baseline_model(i,1);
+    emerg(i) = min(find(tempData(:,2) > threshhold));
+end
+
 %Plot a global map showing the year of emergence
-%<--
+figure(4); clf
+worldmap('World')
+load coastlines
+plotm(coastlat,coastlon)
+scatterm(lat,lon,15,tempData(emerg,1), 'filled'); colorbar; hold on;
+title('years of emergence')
